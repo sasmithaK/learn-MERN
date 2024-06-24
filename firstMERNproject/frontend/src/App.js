@@ -5,14 +5,10 @@ import CounterFunction from './components/CounterFunction';
 function App() {
   return (
     <div>
-      
+      <CounterClass/>
+      <CounterFunction/>
     </div>
   );
 }
 
 export default App;
-
-
-//Component based and funciton based calls 
-//<CounterClass/>
-//<CounterFunction/>
