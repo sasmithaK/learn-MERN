@@ -6,7 +6,7 @@ export default function AddStudent() {
 
     return(
 
-        <div>
+        <div className="container">
             <form>
                 <div class="form-group">
                     <label for="name">Student Name :</label>
@@ -27,7 +27,7 @@ export default function AddStudent() {
                     <label for="name">Student Gender</label>
                     <input type="text" class="form-control" id="gemder" placeholder="Enter student gender"></input>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="name">Student Address</label>
                     <input type="text" class="form-control" id="address" placeholder="Enter student address"></input>
