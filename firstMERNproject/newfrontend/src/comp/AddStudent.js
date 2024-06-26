@@ -20,8 +20,13 @@ export default function AddStudent() {
             address
         }
 
-        axios.post('http://localhost:3000/students/add', newStudent).then(() => {
-            console.log('Student added');
+        axios.post('http://localhost:3000/student/add', newStudent).then(() => {
+            alert('Student added');
+            setName("");
+            setAge("");
+            setGrade("");
+            setGender("");
+            setAddress("");
         }).catch((err) => {
             console.log(err);
         });
@@ -30,7 +35,7 @@ export default function AddStudent() {
     return (
         <form onSubmit={sendData}>
                 <div className="form-group">
-                    <label for="name">Student Name</label>
+                    <label htmlFor="name">Student Name</label>
                     <input type="text" className="form-control" id="name" placeholder="Enter student name" 
                     onChange={(e) => {
                         setName(e.target.value);
@@ -38,7 +43,7 @@ export default function AddStudent() {
                 </div>
 
                 <div className="form-group">
-                    <label for="age">Student Age</label>
+                    <label htmlFor="age">Student Age</label>
                     <input type="text" className="form-control" id="age" placeholder="Enter student name" 
                     onChange={(e) => {
                         setAge(e.target.value);
@@ -46,7 +51,7 @@ export default function AddStudent() {
                 </div>
 
                 <div className="form-group">
-                    <label for="grade">Student Grade</label>
+                    <label htmlFor="grade">Student Grade</label>
                     <input type="text" className="form-control" id="grade" placeholder="Enter student name" 
                     onChange={(e) => {
                         setGrade(e.target.value);
@@ -54,7 +59,7 @@ export default function AddStudent() {
                 </div>
 
                 <div className="form-group">
-                    <label for="gender">Student Gender</label>
+                    <label htmlFor="gender">Student Gender</label>
                     <input type="text" className="form-control" id="gender" placeholder="Enter student name"
                     onChange={(e) => {
                         setGender(e.target.value);
@@ -62,7 +67,7 @@ export default function AddStudent() {
                 </div>
 
                 <div className="form-group">
-                    <label for="address">Student Adress</label>
+                    <label htmlFor="address">Student Adress</label>
                     <input type="text" className="form-control" id="address" placeholder="Enter student name"
                     onChange={(e) => {
                         setAddress(e.target.value);
