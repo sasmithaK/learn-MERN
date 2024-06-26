@@ -10,7 +10,7 @@ require('dotenv').config();
 
 
 //server configuration
-const PORT = process.env.PORT || 8070; //use an available port or use 8070 on the local server
+const PORT = process.env.PORT || 3000; //use an available port or use 8070 on the local server
 
 app.use(cors());
 app.use(bodyParser.json());
