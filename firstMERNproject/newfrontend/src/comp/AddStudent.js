@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "axios"; //use axios to send data to the backend
 
 export default function AddStudent() {
 
-
+    //get the data from the form
     const [name, setName] = useState('');
     const [age, setAge] = useState(''); 
     const [grade, setGrade] = useState('');
     const [gender, setGender] = useState('');
     const [address, setAddress] = useState('');
 
+    //send the data to the backend
     function sendData(e) {
         e.preventDefault();
         const newStudent = {
