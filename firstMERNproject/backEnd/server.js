@@ -1,4 +1,4 @@
-// usering nodemon npm package to restart the server every time the server.js is changed
+// usering nodemon npm package to restart the server every time the server.js is changed/updated
 //import packages
 const express = require('express');
 const mongoose = require('mongoose');
@@ -17,11 +17,7 @@ app.use(bodyParser.json());
 
 //connect to the database
 const URL = process.env.MONGODB_URL;
-
-mongoose.connect(URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+mongoose.connect(URL);
 
 const connection = mongoose.connection;
 connection.once('open', () => {
