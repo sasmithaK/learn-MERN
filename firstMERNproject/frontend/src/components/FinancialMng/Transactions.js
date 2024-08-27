@@ -4,7 +4,7 @@ function Transactions() {
     return (
         <div>
             <h1>Welcome to the Transactions Page</h1>
-            <p>Click on the links above to navigate to different pages</p>
+            <p>Transaction history is loaded here</p>
         </div>
     );
 }

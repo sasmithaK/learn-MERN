@@ -9,4 +9,4 @@ function Scholarships() {
     );
 }   
 
-export default Scholarships;    
+export default Scholarships;
