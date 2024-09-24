@@ -21,7 +21,7 @@ function AddAccount() {
         console.log("Account data submitted:", accountData);
         // Here you would typically send the data to your backend
         // After successful addition, navigate back to the MakePayment page
-        navigate('/make-payment');
+        navigate('/mkpayment');
     };
 
     return (

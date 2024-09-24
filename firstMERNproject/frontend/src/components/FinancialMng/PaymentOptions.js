@@ -1,51 +1,206 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function PaymentOptions() {
-  const [paymentMethod, setPaymentMethod] = useState('card');
-  const [formData, setFormData] = useState({
-    cardNumber: '',
-    studentNumber: '',
-    expiryMonth: '',
-    expiryYear: '',
-    securityCode: '',
-    cardholderName: ''
+  const navigate = useNavigate();
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [fundTransferData, setFundTransferData] = useState({
+    bankName: "",
+    accountNumber: "",
+    accountHolderName: "",
+    branch: "",
   });
+  
+  const [creditCardData, setCreditCardData] = useState({
+    cardNumber: "",
+    expiryMonth: "",
+    expiryYear: "",
+    securityCode: "",
+    cardholderName: "",
+  });
+  
+  const [errors, setErrors] = useState({});
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+  const handlePaymentMethodChange = (e) => {
+    setPaymentMethod(e.target.value);
+  };
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    if (paymentMethod === "fundTransfer") {
+      setFundTransferData((prevState) => ({
+        ...prevState,
+        [id]: value,
+      }));
+    } else if (paymentMethod === "creditCard") {
+      setCreditCardData((prevState) => ({
+        ...prevState,
+        [id]: value,
+      }));
+    }
+  };
+
+  const validate = () => {
+    let tempErrors = {};
+    let isValid = true;
+
+    // Fund Transfer validations
+    if (paymentMethod === "fundTransfer") {
+      if (!fundTransferData.bankName) {
+        tempErrors.bankName = "Bank name is required.";
+        isValid = false;
+      }
+      if (!fundTransferData.accountNumber || !/^\d+$/.test(fundTransferData.accountNumber)) {
+        tempErrors.accountNumber = "Valid account number is required.";
+        isValid = false;
+      }
+      if (!fundTransferData.accountHolderName) {
+        tempErrors.accountHolderName = "Account holder's name is required.";
+        isValid = false;
+      }
+      if (!fundTransferData.branch) {
+        tempErrors.branch = "Branch name is required.";
+        isValid = false;
+      }
+    }
+
+    // Credit Card validations
+    if (paymentMethod === "creditCard") {
+      if (!creditCardData.cardNumber || !/^\d{16}$/.test(creditCardData.cardNumber)) {
+        tempErrors.cardNumber = "Valid 16-digit card number is required.";
+        isValid = false;
+      }
+      if (!creditCardData.expiryMonth || !/^\d{2}$/.test(creditCardData.expiryMonth)) {
+        tempErrors.expiryMonth = "Valid expiry month is required (MM).";
+        isValid = false;
+      }
+      if (!creditCardData.expiryYear || !/^\d{2}$/.test(creditCardData.expiryYear)) {
+        tempErrors.expiryYear = "Valid expiry year is required (YY).";
+        isValid = false;
+      }
+      if (!creditCardData.securityCode || !/^\d{3}$/.test(creditCardData.securityCode)) {
+        tempErrors.securityCode = "Valid 3-digit security code is required.";
+        isValid = false;
+      }
+      if (!creditCardData.cardholderName) {
+        tempErrors.cardholderName = "Cardholder name is required.";
+        isValid = false;
+      }
+    }
+
+    setErrors(tempErrors);
+    return isValid;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Payment data:', { paymentMethod, ...formData });
-    // Here you would typically send the data to your backend
+    if (validate()) {
+      console.log("Payment option selected:", paymentMethod);
+      if (paymentMethod === "fundTransfer") {
+        console.log("Fund Transfer details:", fundTransferData);
+      } else if (paymentMethod === "creditCard") {
+        console.log("Credit Card details:", creditCardData);
+      }
+      alert("Proceeding to payment!");
+      // Pass success message while navigating
+      navigate("/mkpayment", { state: { successMessage: "Payment option selected successfully!" } });
+    }
   };
+  
+  
 
   return (
-    <div className="container py-5">
+    <div className="container py-5" style={{ maxWidth: "800px", margin: "auto" }}>
+      <h1 className="text-center mb-5">Payment Options</h1>
       <form onSubmit={handleSubmit}>
-        <h2 className="mb-4">Payment option</h2>
         <div className="mb-4">
-          <button
-            type="button"
-            className={`btn ${paymentMethod === 'card' ? 'btn-primary' : 'btn-outline-primary'} me-3`}
-            onClick={() => setPaymentMethod('card')}
+          <label htmlFor="paymentMethod" className="form-label text-primary">
+            Select Payment Method
+          </label>
+          <select
+            className="form-control"
+            id="paymentMethod"
+            value={paymentMethod}
+            onChange={handlePaymentMethodChange}
           >
-            Card Payment
-          </button> 
-          <button
-            type="button"
-            className={`btn ${paymentMethod === 'transfer' ? 'btn-primary' : 'btn-outline-primary'}`}
-            onClick={() => setPaymentMethod('transfer')}
-          >
-            Fund Transfer
-          </button>
+            <option value="">Select Payment Method</option>
+            <option value="creditCard">Credit Card</option>
+            <option value="fundTransfer">Fund Transfer</option>
+          </select>
+          {errors.paymentMethod && <small className="text-danger">{errors.paymentMethod}</small>}
         </div>
-        {paymentMethod === 'card' && (
+
+        {/* Conditional Fund Transfer Section */}
+        {paymentMethod === "fundTransfer" && (
+          <>
+            <h3 className="text-center mb-4">Fund Transfer Details</h3>
+
+            <div className="row mb-4">
+              <div className="col-md-6">
+                <label htmlFor="bankName" className="form-label text-primary">
+                  Bank Name
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="bankName"
+                  value={fundTransferData.bankName}
+                  onChange={handleChange}
+                />
+                {errors.bankName && <small className="text-danger">{errors.bankName}</small>}
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="branch" className="form-label text-primary">
+                  Branch
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="branch"
+                  value={fundTransferData.branch}
+                  onChange={handleChange}
+                />
+                {errors.branch && <small className="text-danger">{errors.branch}</small>}
+              </div>
+            </div>
+
+            <div className="row mb-4">
+              <div className="col-md-6">
+                <label htmlFor="accountNumber" className="form-label text-primary">
+                  Account Number
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="accountNumber"
+                  value={fundTransferData.accountNumber}
+                  onChange={handleChange}
+                />
+                {errors.accountNumber && (
+                  <small className="text-danger">{errors.accountNumber}</small>
+                )}
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="accountHolderName" className="form-label text-primary">
+                  Account Holder's Name
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="accountHolderName"
+                  value={fundTransferData.accountHolderName}
+                  onChange={handleChange}
+                />
+                {errors.accountHolderName && (
+                  <small className="text-danger">{errors.accountHolderName}</small>
+                )}
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* Conditional Credit Card Section */}
+        {paymentMethod === "creditCard" && (
           <>
             <div className="mb-3">
               <label htmlFor="cardNumber" className="form-label">Card Number</label>
@@ -53,11 +208,12 @@ function PaymentOptions() {
                 type="text"
                 className="form-control"
                 id="cardNumber"
-                name="cardNumber"
-                value={formData.cardNumber}
-                onChange={handleInputChange}
+                value={creditCardData.cardNumber}
+                onChange={handleChange}
               />
+              {errors.cardNumber && <small className="text-danger">{errors.cardNumber}</small>}
             </div>
+
             <div className="row mb-3">
               <div className="col">
                 <label htmlFor="expiryMonth" className="form-label">Expiry month</label>
@@ -65,11 +221,11 @@ function PaymentOptions() {
                   type="text"
                   className="form-control"
                   id="expiryMonth"
-                  name="expiryMonth"
                   placeholder="MM"
-                  value={formData.expiryMonth}
-                  onChange={handleInputChange}
+                  value={creditCardData.expiryMonth}
+                  onChange={handleChange}
                 />
+                {errors.expiryMonth && <small className="text-danger">{errors.expiryMonth}</small>}
               </div>
               <div className="col">
                 <label htmlFor="expiryYear" className="form-label">Expiry year</label>
@@ -77,11 +233,11 @@ function PaymentOptions() {
                   type="text"
                   className="form-control"
                   id="expiryYear"
-                  name="expiryYear"
                   placeholder="YY"
-                  value={formData.expiryYear}
-                  onChange={handleInputChange}
+                  value={creditCardData.expiryYear}
+                  onChange={handleChange}
                 />
+                {errors.expiryYear && <small className="text-danger">{errors.expiryYear}</small>}
               </div>
               <div className="col">
                 <label htmlFor="securityCode" className="form-label">Security code</label>
@@ -89,39 +245,31 @@ function PaymentOptions() {
                   type="text"
                   className="form-control"
                   id="securityCode"
-                  name="securityCode"
-                  value={formData.securityCode}
-                  onChange={handleInputChange}
+                  value={creditCardData.securityCode}
+                  onChange={handleChange}
                 />
+                {errors.securityCode && <small className="text-danger">{errors.securityCode}</small>}
               </div>
             </div>
+
             <div className="mb-3">
               <label htmlFor="cardholderName" className="form-label">Cardholder name</label>
               <input
                 type="text"
                 className="form-control"
                 id="cardholderName"
-                name="cardholderName"
-                value={formData.cardholderName}
-                onChange={handleInputChange}
+                value={creditCardData.cardholderName}
+                onChange={handleChange}
               />
+              {errors.cardholderName && <small className="text-danger">{errors.cardholderName}</small>}
             </div>
           </>
         )}
-        <div className="mb-3">
-          <label htmlFor="studentNumber" className="form-label">Student run run</label>
-          <input
-            type="text"
-            className="form-control"
-            id="studentNumber"
-            name="studentNumber"
-            value={formData.studentNumber}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="d-grid gap-2">
-          <button type="submit" className="btn btn-primary">Pay Now</button>
-          <button type="button" className="btn btn-link">Schedule Payment</button>
+
+        <div className="d-grid">
+          <button type="submit" className="btn btn-primary btn-lg">
+            Proceed
+          </button>
         </div>
       </form>
     </div>
