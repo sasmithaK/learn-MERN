@@ -12,9 +12,11 @@ app.use(bodyParser.json());
 
 // Import routes
 const studentRoute = require('./routes/students.js');
+const uniRoute = require('./routes/route.js');
 
 // Use routes
 app.use('/student', studentRoute);
+app.use('/posts', uniRoute);
 
 // Start the server
 app.listen(PORT, () => {
