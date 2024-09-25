@@ -8,8 +8,8 @@ function MakePayment() {
   // Default values for Student Number and Student Name
   const [formData, setFormData] = useState({
     university: '',
-    name: 'Sasmitha Kavindu', // Default value for Student Name
-    studentNumber: '12345678', // Default value for Student Number
+    name: 'Sasmitha Kavindu', 
+    studentNumber: '12345678', 
     course: '',
     purpose: '',
     email: '',
