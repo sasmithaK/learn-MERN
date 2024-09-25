@@ -1,92 +1,90 @@
 const router = require('express').Router();
-let Student = require('../models/Student');
+const Student = require('../models/Student');
+module.exports = router;
 
-//create - add student...............................................
-//http://localhost:8070/student/add
-router.route('/add').post((req, res) => {
-    const name = req.body.name;
-    const age = Number(req.body.age);
-    const grade = Number(req.body.grade);
-    const gender = req.body.gender;
-    const address = req.body.address; 
+// Create - add student
+// POST http://localhost:3000/student/add
+router.post('/add', async (req, res) => {
+  const { name, age, grade, gender, address } = req.body;
 
-    const newStudent = new Student({
-        name,
-        age,
-        grade,
-        gender,
-        address
-})
+  const newStudent = new Student({
+    name,
+    age,
+    grade,
+    gender,
+    address,
+  });
 
-//then -> is a js promise
-newStudent.save().then(() => {
+  try {
+    await newStudent.save();
     res.json('Student added!');
-    }).catch((err) => {
-        console.log(err);
-    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to add student' });
+  }
 });
 
-
-//read - get all students..............................................
-//http://localhost:8070/student/
-router.route('/').get((req, res) => {
-    Student.find().then((students) => {
-        res.json(students);
-    }).catch((err) => {
-        console.log(err);
-    });
+// Read - get all students
+// GET http://localhost:3000/student/
+router.get('/', async (req, res) => {
+  try {
+    const students = await Student.find();
+    res.json(students);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch students' });
+  }
 });
 
-//update - edit student details.........................................
-//put is used to update data
-//async is used to make the function asynchronous also known as a promise
-//await is used with the async function to wait for the promise to be resolved
-//http://localhost:8070/student/update/:id
-router.route('/update/:id').put(async (req, res) => {
-    let userId = req.params.id;
-    //d structure -- new feature in js for extracting data from objects
-    const {name, age, grade, gender, address} = req.body;
+// Update - edit student details
+// PUT http://localhost:3000/student/update/:id
+router.put('/update/:id', async (req, res) => {
+  const userId = req.params.id;
+  const { name, age, grade, gender, address } = req.body;
 
-    const updateStudent = {
-        name,
-        age,
-        grade,
-        gender,
-        address
-    }
-    //findOneAndUpdate is used when a custom ID is used
-    const update = await Student.findByIdAndUpdate(userId, updateStudent).then (() => {
-        res.status(200).send({status: "User updated"});
-    }).catch((err) => {
-        console.log(err);
-        res.status(500).send({status: "Error with updating data", error: err.message});
-    });
+  const updateStudent = {
+    name,
+    age,
+    grade,
+    gender,
+    address,
+  };
+
+  try {
+    await Student.findByIdAndUpdate(userId, updateStudent);
+    res.status(200).json({ status: 'User updated' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'Error updating data', error: err.message });
+  }
 });
 
-//delete - remove student...............................................
-//http://localhost:8070/student/delete/:id
-router.route('/delete/:id').delete(async (req, res) => {
-    let userId = req.params.id;
+// Delete - remove student
+// DELETE http://localhost:3000/student/delete/:id
+router.delete('/delete/:id', async (req, res) => {
+  const userId = req.params.id;
 
-    await Student.findByIdAndDelete(userId).then(() => {
-        res.status(200).send({status: "User deleted"});
-    }).catch((err) => {
-        console.log(err.message);
-        res.status(500).send({status: "Error with deleting user", error: err.message});
-    });
+  try {
+    await Student.findByIdAndDelete(userId);
+    res.status(200).json({ status: 'User deleted' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'Error deleting user', error: err.message });
+  }
 });
 
-//get one student's details...............................................
-//http://localhost:8070/student/get/:id
-router.route('/get/:id').get(async (req, res) => {
-    let userId = req.params.id;
+// Get one student's details
+// GET http://localhost:3000/student/get/:id
+router.get('/get/:id', async (req, res) => {
+  const userId = req.params.id;
 
-    const user = await Student.findById(userId).then((student) => {
-        res.status(200).send({status: "User fetched", student});
-    }).catch((err) => {
-        console.log(err.message);
-        res.status(500).send({status: "Error with fetching user", error: err.message});
-    });
+  try {
+    const student = await Student.findById(userId);
+    res.status(200).json({ status: 'User fetched', student });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'Error fetching user', error: err.message });
+  }
 });
 
-module.exports = router;//..
+module.exports = router;
