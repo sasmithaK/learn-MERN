@@ -1,0 +1,33 @@
+{
+    "databases": {
+      "student": {
+        "name": "Student Database",
+        "url": "mongodb+srv://kavindugunasena:Wys3oVeZJ2TanVc8@cluster1.0wgjcbr.mongodb.net/student_database"
+      },
+      "visa": {
+        "name": "Visa Database",
+        "url": "mongodb+srv://VisaManager:oEJESFZjEn7ELluT@cluster0.pnjyy.mongodb.net/"
+      },
+      "student_db": {
+        "name": "Student DB",
+        "url": "mongodb+srv://admin:sNYHJUqGwD2cgky6@cluster0.m16efyn.mongodb.net/"
+      },
+      "university": {
+        "name": "University Database",
+        "url": "mongodb+srv://UAS:YfuHjRSAVRwncMi4@cluster0.lrlkb.mongodb.net/"
+      },
+      "application": {
+        "name": "Application Database",
+        "url": "mongodb+srv://database_new:Hashini2002*@first.qcpxg.mongodb.net/curd-database"
+      },
+      "examination": {
+        "name": "Examination Database",
+        "url": "mongodb+srv://it22254252:cFeICDaLWcqfFtNh@cluster0.zlprzmt.mongodb.net/"
+      },
+      "course": {
+        "name": "Course Database",
+        "url": "mongodb+srv://UAS:YfuHjRSAVRwncMi4@cluster0.lrlkb.mongodb.net/"
+      }
+    }
+  }
+  
