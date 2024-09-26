@@ -3,8 +3,6 @@ const Posts = require('../models/model');
 
 const router = express.Router();
 
-
-
 router.post('/post/save', async (req, res) => {
     try {
         let newPost = new Posts(req.body);

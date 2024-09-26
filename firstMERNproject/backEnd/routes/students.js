@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const Student = require('../models/Student');
-module.exports = router;
 
 // Create - add student
 // POST http://localhost:3000/student/add

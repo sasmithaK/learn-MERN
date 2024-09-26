@@ -14,7 +14,7 @@
       },
       "university": {
         "name": "University Database",
-        "url": "mongodb+srv://unidb:unidb@university.fdoma.mongodb.net/?retryWrites=true&w=majority&appName=University"
+        "url": "mongodb+srv://UAS:YfuHjRSAVRwncMi4@cluster0.lrlkb.mongodb.net"
       },
       "application": {
         "name": "Application Database",

@@ -11,8 +11,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Import routes
-const studentRoute = require('./routes/students.js');
-const uniRoute = require('./routes/route.js');
+const studentRoute = require('./routes/students');
+const uniRoute = require('./routes/route');
 
 // Use routes
 app.use('/student', studentRoute);
